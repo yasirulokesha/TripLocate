@@ -69,6 +69,7 @@
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_view"
         android:layout_width="409dp"
         android:layout_height="503dp"
         android:layout_marginStart="1dp"

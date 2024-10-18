@@ -1,7 +1,8 @@
+package app.triplocate
+
 data class Place(
-    val title: String,
-    val description: String,
-    val imageResId: Int,
-    val country: String,
-    val rating: Float
+    var title: String,
+    var description: String,
+    var imageResId: Int,
+    var country: String,
 )
