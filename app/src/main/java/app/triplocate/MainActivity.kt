@@ -1,15 +1,17 @@
 package app.triplocate
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var recycler:RecyclerView
+    private lateinit var viewAdapter: RecyclerAdapter
     private lateinit var locations:ArrayList<Place>
     lateinit var imgList:Array<Int>
     lateinit var titleList:Array<String>
@@ -76,18 +78,31 @@ class MainActivity : ComponentActivity() {
         )
 
         recycler = findViewById(R.id.item_view)
-        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.layoutManager = GridLayoutManager(this, 2)
         recycler.setHasFixedSize(false)
 
         locations = arrayListOf<Place>()
-        getData()
+        updateView(locations)
+
+
+
     }
 
-    private fun getData(){
+    private fun updateView(locations:ArrayList<Place>){
         for (i in imgList.indices){
             val dataItem = Place(title = titleList[i], description = descriptionList[i], imageResId = imgList[i], country = country[i])
             locations.add(dataItem)
         }
-        recycler.adapter = RecyclerAdapter(locations)
+
+        var adapter:RecyclerAdapter = RecyclerAdapter(locations)
+        recycler.adapter = adapter
+
+        adapter.onItemSelect = {
+            val intent = Intent(this, DetailView::class.java)
+            intent.putExtra("data", it)
+            startActivity(intent)
+        }
+
+
     }
 }

@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerAdapter(private val locationList:ArrayList<Place>): RecyclerView.Adapter<RecyclerAdapter.ViewHolder> ()
 {
+    var onItemSelect: ((Place)->Unit)? =  null
+
     class ViewHolder(item:View):RecyclerView.ViewHolder(item){
         val img:ImageView = item.findViewById(R.id.item_img)
         val title:TextView = item.findViewById(R.id.title)
@@ -29,5 +31,9 @@ class RecyclerAdapter(private val locationList:ArrayList<Place>): RecyclerView.A
         holder.title.text = currentLocation.title
         holder.shortDescription.text = currentLocation.description
         holder.img.setImageResource(currentLocation.imageResId)
+
+        holder.itemView.setOnClickListener{
+            onItemSelect?.invoke(currentLocation)
+        }
     }
 }
