@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 
 class RecyclerAdapter(private val locationList:ArrayList<Place>): RecyclerView.Adapter<RecyclerAdapter.ViewHolder> ()
 {
@@ -14,7 +15,7 @@ class RecyclerAdapter(private val locationList:ArrayList<Place>): RecyclerView.A
     class ViewHolder(item:View):RecyclerView.ViewHolder(item){
         val img:ImageView = item.findViewById(R.id.item_img)
         val title:TextView = item.findViewById(R.id.title)
-        val shortDescription:TextView = item.findViewById(R.id.short_description)
+        val country:TextView = item.findViewById(R.id.country)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,8 +30,11 @@ class RecyclerAdapter(private val locationList:ArrayList<Place>): RecyclerView.A
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentLocation = locationList[position]
         holder.title.text = currentLocation.title
-        holder.shortDescription.text = currentLocation.description
-        holder.img.setImageResource(currentLocation.imageResId)
+        holder.country.text = currentLocation.country
+
+        Picasso.get()
+            .load(currentLocation.imageResId)
+            .into(holder.img)
 
         holder.itemView.setOnClickListener{
             onItemSelect?.invoke(currentLocation)

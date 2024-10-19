@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.squareup.picasso.Picasso
 
 @Suppress("DEPRECATION")
 class DetailView : AppCompatActivity() {
@@ -23,7 +24,11 @@ class DetailView : AppCompatActivity() {
             val title:TextView = findViewById(R.id.title_detail_view)
             val country:TextView = findViewById(R.id.country_view)
 
-            img.setImageResource(data.imageResId)
+//            img.setImageResource(data.imageResId)
+            Picasso.get()
+                .load(data.imageResId)
+                .into(img)
+
             title.text = data.title
             country.text = data.country
         }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1056703338099",
+    "project_id": "triplocate-780cd",
+    "storage_bucket": "triplocate-780cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056703338099:android:ee18a02cad8642c3e47c06",
+        "android_client_info": {
+          "package_name": "app.triplocate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-OY6TZ_WBgCl1B6swTm_4TazYh2U-Isg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

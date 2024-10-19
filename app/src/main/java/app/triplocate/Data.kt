@@ -6,13 +6,13 @@ import android.os.Parcelable
 data class Place(
     var title: String,
     var description: String,
-    var imageResId: Int,
+    var imageResId: String,
     var country: String,
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readInt(),
+        parcel.readString()!!,
         parcel.readString()!!
     ) {
     }
@@ -20,7 +20,7 @@ data class Place(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(title)
         parcel.writeString(description)
-        parcel.writeInt(imageResId)
+        parcel.writeString(imageResId)
         parcel.writeString(country)
     }
 
