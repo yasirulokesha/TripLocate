@@ -5,11 +5,11 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
@@ -31,18 +31,32 @@ class MainActivity : AppCompatActivity() {
 
         locations = arrayListOf<Place>()
         fetchLocationsFromFirebase()
-
         updateView(locations)
 
+        val fabAdd = findViewById<FloatingActionButton>(R.id.fab_add)
+        fabAdd.setOnClickListener {
+            val intent = Intent(this, AddPlace::class.java)
+            startActivity(intent)
+        }
 
+    }
 
+    override fun onResume() {
+        super.onResume()
+        locations = arrayListOf<Place>()
+        fetchLocationsFromFirebase()
+        updateView(locations)
     }
 
     private fun fetchLocationsFromFirebase() {
         db.collection("locations")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                locations.clear()
+                for (document in snapshots!!) {
                     Log.d(TAG, "${document.id} => ${document.data}")
                     val title = document.getString("title")
                     val description = document.getString("description")
@@ -53,23 +67,20 @@ class MainActivity : AppCompatActivity() {
                         val location = Place(title, description, imageResId, country)
                         locations.add(location)
                     }
+
                     updateView(locations)
-                    Toast.makeText(this, "Successfully imported doc", Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, "Successfully imported data from firebase!")
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents.", exception)
             }
     }
 
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        updateView(locations)
+    }
 
     private fun updateView(locations:ArrayList<Place>){
-//        for (i in locations.indices){
-//            val dataItem = Place(title = titleList[i], description = descriptionList[i], imageResId = imgList[i], country = country[i])
-//            locations.add(dataItem)
-//        }
-
         val adapter:RecyclerAdapter = RecyclerAdapter(locations)
         recycler.adapter = adapter
 
@@ -78,6 +89,5 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("data", it)
             startActivity(intent)
         }
-
     }
 }

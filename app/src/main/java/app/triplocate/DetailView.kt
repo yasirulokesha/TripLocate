@@ -13,14 +13,10 @@ class DetailView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_detail_view)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
+
         val data = intent.getParcelableExtra<Place>("data")
         if (data!=null){
-            val img:ImageView = findViewById(R.id.detailed_img)
+            val img:ImageView = findViewById(R.id.img_preview)
             val title:TextView = findViewById(R.id.title_detail_view)
             val country:TextView = findViewById(R.id.country_view)
 
