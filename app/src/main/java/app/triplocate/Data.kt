@@ -8,12 +8,16 @@ data class Place(
     var description: String,
     var imageResId: String,
     var country: String,
-): Parcelable {
+    var id: String,
+    var fav: Boolean = false
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readString()!!
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readByte() != 0.toByte()
     ) {
     }
 
@@ -22,6 +26,8 @@ data class Place(
         parcel.writeString(description)
         parcel.writeString(imageResId)
         parcel.writeString(country)
+        parcel.writeString(id)
+        parcel.writeByte(if (fav) 1 else 0)
     }
 
     override fun describeContents(): Int {

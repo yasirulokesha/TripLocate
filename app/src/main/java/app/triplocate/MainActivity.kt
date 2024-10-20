@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.main_activity)
-        supportActionBar?.hide()
+//        supportActionBar?.hide()
 
         recycler = findViewById(R.id.item_view)
         recycler.layoutManager = GridLayoutManager(this, 2)
@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AddPlace::class.java)
             startActivity(intent)
         }
+
 
     }
 
@@ -62,9 +63,10 @@ class MainActivity : AppCompatActivity() {
                     val description = document.getString("description")
                     val imageResId = document.getString("img")
                     val country = document.getString("country")
+                    val disfavour = document.getBoolean("fav") ?: false
 
                     if (title != null && description != null && imageResId != null && country != null) {
-                        val location = Place(title, description, imageResId, country)
+                        val location = Place(title, description, imageResId, country, document.id, disfavour)
                         locations.add(location)
                     }
 
@@ -75,6 +77,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    @Deprecated("This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}\n      with the appropriate {@link ActivityResultContract} and handling the result in the\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         updateView(locations)

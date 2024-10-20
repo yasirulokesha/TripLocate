@@ -1,5 +1,6 @@
 package app.triplocate
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -37,6 +38,12 @@ class AddPlace : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.add_place)
 
+        val backBtn = findViewById<Button>(R.id.back_btn)
+        backBtn.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
         imageView = findViewById(R.id.img_preview)
 
         val btnUploadImage:FloatingActionButton = findViewById(R.id.img_upload)
@@ -53,13 +60,16 @@ class AddPlace : AppCompatActivity() {
 
             uploadToFirebaseStorage(imageUri){ url->
                 if (url != null) {
+                    saveBtn.isEnabled = false
+                    Toast.makeText(this, "Successfully uploaded image", Toast.LENGTH_SHORT).show()
                     uploadFirestore(url, title, description, country)
                 } else {
+                    saveBtn.isEnabled = true
                     Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
                 }
             }
-
         }
+
     }
 
     private fun uploadToFirebaseStorage(imageUri: Uri, callback: (String?) -> Unit) {

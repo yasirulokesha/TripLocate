@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="30dp">
 
     <Space
         android:layout_width="wrap_content"
@@ -45,13 +46,14 @@
                     tools:visibility="visible" />
 
                 <View
-                    android:id="@+id/view5"
+                    android:id="@+id/view6"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:alpha="0.8"
                     android:background="@drawable/gradient_overlay"
                     android:visibility="visible"
-                    tools:visibility="visible" />
+                    tools:visibility="visible"
+                    tools:ignore="DuplicateIds" />
 
                 <TextView
                     android:id="@+id/title_detail_view"

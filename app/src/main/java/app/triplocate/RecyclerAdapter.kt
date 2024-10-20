@@ -32,6 +32,7 @@ class RecyclerAdapter(private val locationList:ArrayList<Place>): RecyclerView.A
         holder.title.text = currentLocation.title
         holder.country.text = currentLocation.country
 
+
         Picasso.get()
             .load(currentLocation.imageResId)
             .into(holder.img)
