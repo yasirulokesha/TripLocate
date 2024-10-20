@@ -16,10 +16,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var recycler:RecyclerView
     private lateinit var locations:ArrayList<Place>
-    lateinit var imgList:Array<Int>
-    lateinit var titleList:Array<String>
-    lateinit var descriptionList:Array<String>
-    lateinit var country:Array<String>
     private val db = FirebaseFirestore.getInstance()
 
     @SuppressLint("MissingInflatedId")
@@ -27,60 +23,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.main_activity)
-
-//        imgList = arrayOf(
-//            R.drawable.thai,
-//            R.drawable.bg_medium,
-//            R.drawable.thai,
-//            R.drawable.bg_medium,
-//            R.drawable.thai,
-//            R.drawable.bg_medium,
-//            R.drawable.thai,
-//            R.drawable.bg_medium,
-//            R.drawable.thai,
-//            R.drawable.bg_medium,
-//            R.drawable.thai,
-//            R.drawable.bg_medium,
-//            R.drawable.thai,
-//            R.drawable.bg_medium
-//        )
-//
-//        titleList = arrayOf(
-//            "thai",
-//            "sample",
-//            "thai",
-//            "sample","thai",
-//            "sample","thai",
-//            "sample","thai",
-//            "sample","thai",
-//            "sample","thai",
-//            "sample"
-//        )
-//
-//        descriptionList = arrayOf(
-//            "sample des",
-//            "sample des",
-//            "sample des",
-//            "sample des","sample des",
-//            "sample des","sample des",
-//            "sample des","sample des",
-//            "sample des","sample des",
-//            "sample des","sample des",
-//            "sample des"
-//        )
-//
-//        country = arrayOf(
-//            "Thailand",
-//            "internet",
-//            "Thailand",
-//            "internet","Thailand",
-//            "internet","Thailand",
-//            "internet","Thailand",
-//            "internet","Thailand",
-//            "internet","Thailand",
-//            "internet"
-//        )
-
+        supportActionBar?.hide()
 
         recycler = findViewById(R.id.item_view)
         recycler.layoutManager = GridLayoutManager(this, 2)
@@ -126,8 +69,6 @@ class MainActivity : AppCompatActivity() {
 //            val dataItem = Place(title = titleList[i], description = descriptionList[i], imageResId = imgList[i], country = country[i])
 //            locations.add(dataItem)
 //        }
-
-
 
         val adapter:RecyclerAdapter = RecyclerAdapter(locations)
         recycler.adapter = adapter
