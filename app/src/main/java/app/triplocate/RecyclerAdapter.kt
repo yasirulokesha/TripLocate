@@ -10,14 +10,17 @@ import com.squareup.picasso.Picasso
 
 class RecyclerAdapter(private val locationList:ArrayList<Place>): RecyclerView.Adapter<RecyclerAdapter.ViewHolder> ()
 {
+//    Storing when select an item
     var onItemSelect: ((Place)->Unit)? =  null
 
+//    Referencing a holder for each item
     class ViewHolder(item:View):RecyclerView.ViewHolder(item){
         val img:ImageView = item.findViewById(R.id.item_img)
         val title:TextView = item.findViewById(R.id.title)
         val country:TextView = item.findViewById(R.id.country)
     }
 
+//    Creating items for each
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_container,parent,false)
         return ViewHolder(itemView)
@@ -27,6 +30,7 @@ class RecyclerAdapter(private val locationList:ArrayList<Place>): RecyclerView.A
         return locationList.size
     }
 
+//    Make reference for each item
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentLocation = locationList[position]
         holder.title.text = currentLocation.title

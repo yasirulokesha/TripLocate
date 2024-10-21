@@ -44,15 +44,17 @@ class MainActivity : AppCompatActivity() {
         fetchLocationsFromFirebase()
         updateView(locations)
 
+//        Bottom navigation config
         bottomNav = findViewById(R.id.bottom_navigation)
         bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
+//                Clck on home
                 R.id.nav_home -> {
                     loadLayout(R.layout.home_layout_)
                     recycler = findViewById(R.id.item_view)
                     recycler.layoutManager = GridLayoutManager(this, 2)
                     recycler.setHasFixedSize(false)
-//
+//                    Clear the array for fetch again
                     locations = arrayListOf<Place>()
                     fetchLocationsFromFirebase()
                     updateView(locations)
@@ -60,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                     updateView(locations)
                     true
                 }
+//                Click on favourites
                 R.id.nav_favorites -> {
                     loadLayout(R.layout.favourites_layout)
                     true
@@ -88,6 +91,7 @@ class MainActivity : AppCompatActivity() {
         updateView(locations)
     }
 
+//    Fetch The data from firebase
     private fun fetchLocationsFromFirebase() {
         db.collection("locations")
             .addSnapshotListener { snapshots, e ->
@@ -97,6 +101,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 locations.clear()
                 for (document in snapshots!!) {
+//                    Adding data to the local arraylist
                     Log.d(TAG, "${document.id} => ${document.data}")
                     val title = document.getString("title")
                     val description = document.getString("description")
@@ -109,6 +114,7 @@ class MainActivity : AppCompatActivity() {
                         locations.add(location)
                     }
 
+//                    Update the recycler view
                     updateView(locations)
                     Log.d(TAG, "Successfully imported data from firebase!")
                 }

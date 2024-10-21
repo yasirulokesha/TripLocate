@@ -24,9 +24,11 @@ class AddPlace : AppCompatActivity() {
     private lateinit var imageUri:Uri
     var img_selected:Boolean = false
 
+//    Create a image picker
     private val openImagePicker = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
             Log.d("PhotoPicker", "Selected URI: $uri")
+//            Set the preview
             imageView.setImageURI(uri)
             imageUri = uri
             img_selected = true
@@ -79,9 +81,11 @@ class AddPlace : AppCompatActivity() {
     }
 
     private fun uploadToFirebaseStorage(imageUri: Uri, callback: (String?) -> Unit) {
+//        Create a reference to put file on storage
         val storageRef = FirebaseStorage.getInstance().getReference("locations/${UUID.randomUUID()}")
-
+//  Check the image Uri is ready to upload
         imageUri.let {
+//            Upload the file to firebase storage
             storageRef.putFile(it)
                 .addOnSuccessListener {
                     storageRef.downloadUrl.addOnSuccessListener { uri ->
@@ -99,19 +103,23 @@ class AddPlace : AppCompatActivity() {
         }
     }
 
+// Adding data to firestore
     private fun uploadFirestore(url:String, title:String, description:String, country:String){
         Toast.makeText(this, url, Toast.LENGTH_SHORT).show()
         val db = Firebase.firestore
+//    Create a map of data for uploading
         val location = hashMapOf(
             "title" to title,
             "description" to description,
             "img" to url,
             "country" to country
         )
+//    Create a firesore reference to store data
         db.collection("locations")
             .add(location)
             .addOnSuccessListener {
                 Toast.makeText(this, "Successfully uploaded to firestore", Toast.LENGTH_SHORT).show()
+//                Return when successfully added
                 finish()
             }
             .addOnFailureListener {

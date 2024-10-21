@@ -48,6 +48,7 @@ class DetailView : AppCompatActivity() {
                 } else {
                     favBtn.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.baseline_favorite_border_24, 0, 0)  // Outlined heart
                 }
+//                Updating the firesore for favourites
                 val db = Firebase.firestore
                 data.id.let {
                     db.collection("locations").document(it)
@@ -62,10 +63,12 @@ class DetailView : AppCompatActivity() {
                 }
             }
         }
-
+//       Create Reference to delete button
         val deleteBtn = findViewById<Button>(R.id.delete_btn)
         deleteBtn.setOnClickListener {
+//            Create a reference with the url
             val storageRef = FirebaseStorage.getInstance().getReference("locations/${data!!.imageResId}")
+//            Delete the image from storage
             storageRef.delete()
                 .addOnSuccessListener {
                     Toast.makeText(this, "Successfully image deleted", Toast.LENGTH_SHORT).show()
@@ -73,7 +76,9 @@ class DetailView : AppCompatActivity() {
                 .addOnFailureListener {
                     Toast.makeText(this, "Failed to delete image", Toast.LENGTH_SHORT).show()
                 }
+//            Create a reference to firestore
             val db = Firebase.firestore
+//            Delete the data from firestore
             db.collection("locations").document(data.id).delete()
                 .addOnSuccessListener {
                 Toast.makeText(this, "Successfully deleted", Toast.LENGTH_SHORT).show()
@@ -83,11 +88,6 @@ class DetailView : AppCompatActivity() {
                     Toast.makeText(this, "Failed to delete", Toast.LENGTH_SHORT).show()
                 }
         }
-
-//        val favBtn = findViewById<Button>(R.id.fav_btn)
-//        favBtn.setOnClickListener {
-//
-//        }
 
     }
 }
