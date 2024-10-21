@@ -5,10 +5,13 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.widget.FrameLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -17,13 +20,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recycler:RecyclerView
     private lateinit var locations:ArrayList<Place>
     private val db = FirebaseFirestore.getInstance()
+    lateinit var bottomNav: BottomNavigationView
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.main_activity)
-//        supportActionBar?.hide()
+
+        val fabAdd = findViewById<FloatingActionButton>(R.id.fab_add)
+        fabAdd.setOnClickListener {
+            val intent = Intent(this, AddPlace::class.java)
+            startActivity(intent)
+        }
+
+        loadLayout(R.layout.home_layout_)
 
         recycler = findViewById(R.id.item_view)
         recycler.layoutManager = GridLayoutManager(this, 2)
@@ -33,13 +44,41 @@ class MainActivity : AppCompatActivity() {
         fetchLocationsFromFirebase()
         updateView(locations)
 
-        val fabAdd = findViewById<FloatingActionButton>(R.id.fab_add)
-        fabAdd.setOnClickListener {
-            val intent = Intent(this, AddPlace::class.java)
-            startActivity(intent)
+        bottomNav = findViewById(R.id.bottom_navigation)
+        bottomNav.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_home -> {
+                    loadLayout(R.layout.home_layout_)
+                    recycler = findViewById(R.id.item_view)
+                    recycler.layoutManager = GridLayoutManager(this, 2)
+                    recycler.setHasFixedSize(false)
+//
+                    locations = arrayListOf<Place>()
+                    fetchLocationsFromFirebase()
+                    updateView(locations)
+                    fetchLocationsFromFirebase()
+                    updateView(locations)
+                    true
+                }
+                R.id.nav_favorites -> {
+                    loadLayout(R.layout.favourites_layout)
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
         }
+    }
 
+    fun loadLayout(layout: Int){
+        val container:FrameLayout = findViewById(R.id.container)
+        container.removeAllViews()
 
+        val inflater = LayoutInflater.from(this)
+        val newLayout = inflater.inflate(layout, container, false)
+
+        container.addView(newLayout)
     }
 
     override fun onResume() {
@@ -93,6 +132,4 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
-
 }
