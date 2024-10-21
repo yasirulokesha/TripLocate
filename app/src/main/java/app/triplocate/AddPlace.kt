@@ -22,12 +22,14 @@ class AddPlace : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
     private lateinit var imageUri:Uri
+    var img_selected:Boolean = false
 
     private val openImagePicker = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
             Log.d("PhotoPicker", "Selected URI: $uri")
             imageView.setImageURI(uri)
             imageUri = uri
+            img_selected = true
         } else {
             Log.d("PhotoPicker", "No media selected")
         }
@@ -54,22 +56,26 @@ class AddPlace : AppCompatActivity() {
         val saveBtn:Button = findViewById(R.id.save_btn)
 
         saveBtn.setOnClickListener {
-            val title = findViewById<EditText>(R.id.title_input).text.toString()
-            val description = findViewById<EditText>(R.id.description_input).text.toString()
-            val country = findViewById<EditText>(R.id.country_input).text.toString()
+            saveBtn.isEnabled = false
+            val title:String = findViewById<EditText>(R.id.title_input).text.toString()
+            val description:String = findViewById<EditText>(R.id.description_input).text.toString()
+            val country:String = findViewById<EditText>(R.id.country_input).text.toString()
 
-            uploadToFirebaseStorage(imageUri){ url->
-                if (url != null) {
-                    saveBtn.isEnabled = false
-                    Toast.makeText(this, "Successfully uploaded image", Toast.LENGTH_SHORT).show()
-                    uploadFirestore(url, title, description, country)
-                } else {
-                    saveBtn.isEnabled = true
-                    Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+            if (!img_selected || title.isEmpty() || description.isEmpty() || country.isEmpty()) {
+                saveBtn.isEnabled = true
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+            }else{
+                uploadToFirebaseStorage(imageUri){ url->
+                    if (url != null) {
+                        Toast.makeText(this, "Successfully uploaded image", Toast.LENGTH_SHORT).show()
+                        uploadFirestore(url, title, description, country)
+                    } else {
+                        saveBtn.isEnabled = true
+                        Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
-
     }
 
     private fun uploadToFirebaseStorage(imageUri: Uri, callback: (String?) -> Unit) {
@@ -93,7 +99,7 @@ class AddPlace : AppCompatActivity() {
         }
     }
 
-    private fun uploadFirestore(url:String?, title:String, description:String, country:String){
+    private fun uploadFirestore(url:String, title:String, description:String, country:String){
         Toast.makeText(this, url, Toast.LENGTH_SHORT).show()
         val db = Firebase.firestore
         val location = hashMapOf(
@@ -114,11 +120,6 @@ class AddPlace : AppCompatActivity() {
                 storageRef.delete()
             }
 
-    }
-
-    private fun ImageId(title:String):String{
-        val uuid = UUID.randomUUID().toString() // Generates a unique UUID
-        return "${title}_$uuid"
     }
 
 }

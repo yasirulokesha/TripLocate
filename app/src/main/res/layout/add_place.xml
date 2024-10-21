@@ -27,14 +27,6 @@
             tools:background="@drawable/round_arrow_back_24"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-        <Button
-            android:id="@+id/delete_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center|right"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/round_edit_24"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
     </FrameLayout>
 
     <FrameLayout
@@ -62,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:importantForAccessibility="no"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/bg_medium"
+                    android:src="@drawable/sample_img"
                     android:visibility="visible"
                     tools:visibility="visible" />
 
@@ -141,7 +133,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="Save " />
+            android:enabled="true"
+            android:text="Save "
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

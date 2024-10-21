@@ -63,10 +63,10 @@ class MainActivity : AppCompatActivity() {
                     val description = document.getString("description")
                     val imageResId = document.getString("img")
                     val country = document.getString("country")
-                    val disfavour = document.getBoolean("fav") ?: false
+                    val favourite = document.getBoolean("fav") ?: false
 
                     if (title != null && description != null && imageResId != null && country != null) {
-                        val location = Place(title, description, imageResId, country, document.id, disfavour)
+                        val location = Place(title, description, imageResId, country, document.id, favourite)
                         locations.add(location)
                     }
 
@@ -93,4 +93,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+
 }

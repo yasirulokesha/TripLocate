@@ -48,6 +48,18 @@ class DetailView : AppCompatActivity() {
                 } else {
                     favBtn.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.baseline_favorite_border_24, 0, 0)  // Outlined heart
                 }
+                val db = Firebase.firestore
+                data.id.let {
+                    db.collection("locations").document(it)
+                        .update("fav",data.fav)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Successfully added to favourites", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Failed to add to favourites", Toast.LENGTH_SHORT).show()
+                        }
+
+                }
             }
         }
 
@@ -71,6 +83,11 @@ class DetailView : AppCompatActivity() {
                     Toast.makeText(this, "Failed to delete", Toast.LENGTH_SHORT).show()
                 }
         }
+
+//        val favBtn = findViewById<Button>(R.id.fav_btn)
+//        favBtn.setOnClickListener {
+//
+//        }
 
     }
 }
